@@ -2,6 +2,8 @@
 
 namespace Rtcl\OffloadMedia\Admin;
 
+use Rtcl\Helpers\Link;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -77,6 +79,11 @@ class Settings {
 				'title' => esc_html__( 'Domain', 'rtcl-offload-media' ),
 				'type'  => 'text',
 			),
+			'check_connection'    => [
+				'title'       => '',
+				'type'        => 'html',
+				'description' => __( '<a id="rtcl-offload-connection-check" class="btn" href="#">Check Connection</a>', 'rtcl-offload-media' )
+			]
 		);
 	}
 }

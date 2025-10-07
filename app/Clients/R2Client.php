@@ -68,4 +68,25 @@ class R2Client extends AbstractClient {
 			return false;
 		}
 	}
+
+	/**
+	 * Check connection to R2 bucket
+	 *
+	 * @return true|string Returns true if OK, or error message if failed
+	 */
+	public function checkConnection(): bool|string {
+		try {
+			// Try listing 1 object to validate access
+			$this->client->listObjectsV2( [
+				'Bucket'  => $this->bucket,
+				'MaxKeys' => 1,
+			] );
+
+			return true;
+		} catch ( AwsException $e ) {
+			error_log( 'R2 Connection Error: ' . $e->getMessage() );
+
+			return $e->getMessage();
+		}
+	}
 }

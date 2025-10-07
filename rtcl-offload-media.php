@@ -29,6 +29,9 @@ if ( ! defined( 'RTCL_OFFLOAD_MEDIA_PLUGIN_FILE' ) ) {
 if ( ! defined( 'RTCL_OFFLOAD_MEDIA_PLUGIN_PATH' ) ) {
 	define( 'RTCL_OFFLOAD_MEDIA_PLUGIN_PATH', plugin_dir_path( RTCL_OFFLOAD_MEDIA_PLUGIN_FILE ) );
 }
+if ( ! defined( 'RTCL_OFFLOAD_MEDIA_PLUGIN_URL' ) ) {
+	define( 'RTCL_OFFLOAD_MEDIA_PLUGIN_URL', plugin_dir_url( RTCL_OFFLOAD_MEDIA_PLUGIN_FILE ) );
+}
 
 // Load composer autoloader.
 require_once __DIR__ . '/vendor/autoload.php';
