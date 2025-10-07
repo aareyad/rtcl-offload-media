@@ -19,6 +19,8 @@ abstract class AbstractClient {
 
 	abstract public function upload( $filePath, $key );
 
+	abstract public function head( $key );
+
 	abstract public function delete( $key );
 
 	/**

@@ -23,6 +23,34 @@ class R2Client extends AbstractClient {
 	}
 
 	/**
+	 * Check if a file exists in the R2 bucket
+	 *
+	 * @param string $key The object key (relative path in bucket)
+	 *
+	 * @return bool True if exists, false if not
+	 */
+	public function head( $key ): bool {
+		try {
+			$this->client->headObject( [
+				'Bucket' => $this->bucket,
+				'Key'    => $key,
+			] );
+
+			return true; // File exists
+		} catch ( \Aws\S3\Exception\S3Exception $e ) {
+			// If not found, return false
+			if ( $e->getAwsErrorCode() === 'NotFound' ) {
+				return false;
+			}
+
+			// For other errors, log and rethrow
+			error_log( 'R2 Head Error: ' . $e->getMessage() );
+			throw $e;
+		}
+	}
+
+
+	/**
 	 * Upload file to R2
 	 *
 	 * @param $filePath
