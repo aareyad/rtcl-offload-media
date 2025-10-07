@@ -4,6 +4,7 @@ namespace Rtcl\OffloadMedia\Hooks;
 
 use Rtcl\OffloadMedia\Clients\AbstractClient;
 use Rtcl\OffloadMedia\Helper\Functions;
+use Rtcl\Helpers\Functions as RtclFunctions;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,32 +19,44 @@ class Hooks {
 	 */
 	public static function init(): void {
 		$instance = new self();
-		add_filter( 'wp_handle_upload', array( $instance, 'upload_to_storage' ) );
-		add_filter( 'wp_get_attachment_url', array( $instance, 'replace_with_storage_url' ), 20, 2 );
-		add_action( 'delete_attachment', array( $instance, 'delete_from_storage' ) );
+
+		// Upload hook
+		add_filter( 'wp_handle_upload', [ $instance, 'upload_to_storage' ] );
+
+		// Replace URLs for attachments
+		add_filter( 'wp_get_attachment_url', [ $instance, 'replace_with_storage_url' ], 20, 2 );
+
+		// Delete attachments from storage
+		add_action( 'delete_attachment', [ $instance, 'delete_from_storage' ] );
+
+		// Upload all sizes after metadata generation
 		add_filter( 'wp_generate_attachment_metadata', [ $instance, 'upload_all_sizes_to_storage' ], 99, 2 );
 	}
 
+	/**
+	 * Upload main file and its sizes to R2
+	 *
+	 * @param array $upload
+	 *
+	 * @return array
+	 */
 	public function upload_to_storage( $upload ) {
 		if ( empty( $upload['file'] ) ) {
 			return $upload;
 		}
 
-		//$file_path    = $upload['file'];
-		$file_path  = wp_normalize_path( $upload['file'] );
-		$upload_dir = wp_get_upload_dir();
-		//$relative_key = str_replace( $upload_dir['basedir'] . '/', '', $file_path );
+		$file_path    = wp_normalize_path( $upload['file'] );
+		$upload_dir   = wp_get_upload_dir();
 		$relative_key = str_replace( wp_normalize_path( $upload_dir['basedir'] . '/' ), '', $file_path );
 
 		$client = Functions::get_storage_client();
-
 		if ( ! ( $client instanceof AbstractClient ) ) {
 			return $upload;
 		}
 
 		$attachment_id = $upload['id'] ?? 0;
 
-		// 1. Generate attachment metadata (resizes)
+		// Generate metadata to ensure sizes exist
 		if ( $attachment_id ) {
 			$metadata = wp_generate_attachment_metadata( $attachment_id, $file_path );
 			wp_update_attachment_metadata( $attachment_id, $metadata );
@@ -51,7 +64,7 @@ class Hooks {
 			$metadata = [];
 		}
 
-		// 2. Prepare all files to upload: main file + sizes
+		// Prepare all files for upload: main + sizes
 		$files_to_upload = [ $relative_key ];
 
 		if ( ! empty( $metadata['sizes'] ) && is_array( $metadata['sizes'] ) ) {
@@ -60,7 +73,7 @@ class Hooks {
 			}
 		}
 
-		// 3. Upload all files to R2
+		// Upload all files
 		foreach ( $files_to_upload as $file ) {
 			$local_file = $upload_dir['basedir'] . '/' . $file;
 			if ( file_exists( $local_file ) ) {
@@ -68,12 +81,7 @@ class Hooks {
 			}
 		}
 
-		// 4. Save offloaded files meta
-		/*if ( $attachment_id ) {
-			update_post_meta( $attachment_id, '_rtcl_offloaded_files', $files_to_upload );
-		}*/
-
-		// 5. If offload-only mode, delete local files
+		// Offload-only mode: delete local files
 		$offload_only = true;
 		if ( $offload_only ) {
 			foreach ( $files_to_upload as $file ) {
@@ -84,27 +92,20 @@ class Hooks {
 			}
 		}
 
-		// 6. Set URL to R2 main file
+		// Return R2 URL for main file
 		$upload['url'] = $client->getUrl( $relative_key );
-
-		return $upload;
-
-
-		/*if ( $client instanceof AbstractClient ) {
-			$url = $client->upload( $file_path, $relative_key );
-			if ( $url ) {
-				$upload['url'] = $url;
-
-				$remove_local_file = true;
-				if ( $remove_local_file ) {
-					@unlink( $upload['file'] );
-				}
-			}
-		}*/
 
 		return $upload;
 	}
 
+	/**
+	 * Upload all generated sizes to storage after metadata generation
+	 *
+	 * @param array $metadata
+	 * @param int   $attachment_id
+	 *
+	 * @return array
+	 */
 	public function upload_all_sizes_to_storage( $metadata, $attachment_id ) {
 		$file = get_post_meta( $attachment_id, '_wp_attached_file', true );
 		if ( ! $file ) {
@@ -119,14 +120,14 @@ class Hooks {
 			return $metadata;
 		}
 
-		// Upload the main/original file
+		// Upload original file
 		$main_file_path = $base_dir . $file;
 		if ( file_exists( $main_file_path ) ) {
 			$client->upload( $main_file_path, $file );
 		}
 
-		// Upload each generated image size
-		if ( ! empty( $metadata['sizes'] ) ) {
+		// Upload all generated sizes
+		if ( ! empty( $metadata['sizes'] ) && is_array( $metadata['sizes'] ) ) {
 			foreach ( $metadata['sizes'] as $size_data ) {
 				if ( ! empty( $size_data['file'] ) ) {
 					$size_file_path = wp_normalize_path( path_join( dirname( $main_file_path ), $size_data['file'] ) );
@@ -138,14 +139,17 @@ class Hooks {
 			}
 		}
 
-		// replace URLs in metadata for consistency
-		if ( isset( $metadata['file'] ) ) {
-			$metadata['file'] = $file;
-		}
-
 		return $metadata;
 	}
 
+	/**
+	 * Replace attachment URL with storage URL
+	 *
+	 * @param string $url
+	 * @param int    $post_id
+	 *
+	 * @return string
+	 */
 	public function replace_with_storage_url( $url, $post_id ) {
 		$file = get_post_meta( $post_id, '_wp_attached_file', true );
 		if ( ! $file ) {
@@ -154,7 +158,6 @@ class Hooks {
 
 		$client = Functions::get_storage_client();
 		if ( $client instanceof AbstractClient ) {
-			// Only replace URL if a file exists in storage
 			if ( $client->head( $file ) ) {
 				return $client->getUrl( $file );
 			}
@@ -164,9 +167,9 @@ class Hooks {
 	}
 
 	/**
-	 * Delete a file from storage
+	 * Delete attachment files from storage
 	 *
-	 * @param $post_id
+	 * @param int $post_id
 	 *
 	 * @return void
 	 */
@@ -179,6 +182,15 @@ class Hooks {
 		$client = Functions::get_storage_client();
 		if ( $client instanceof AbstractClient ) {
 			$client->delete( $file );
+
+			// Delete all sizes if metadata exists
+			$metadata = wp_get_attachment_metadata( $post_id );
+			if ( ! empty( $metadata['sizes'] ) && is_array( $metadata['sizes'] ) ) {
+				foreach ( $metadata['sizes'] as $size ) {
+					$size_file = dirname( $file ) . '/' . $size['file'];
+					$client->delete( $size_file );
+				}
+			}
 		}
 	}
 }
