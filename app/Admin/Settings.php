@@ -2,8 +2,6 @@
 
 namespace Rtcl\OffloadMedia\Admin;
 
-use Rtcl\Helpers\Link;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

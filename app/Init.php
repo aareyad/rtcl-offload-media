@@ -2,6 +2,7 @@
 
 namespace Rtcl\OffloadMedia;
 
+use Rtcl\OffloadMedia\Admin\Ajax;
 use Rtcl\OffloadMedia\Admin\Scripts;
 use Rtcl\OffloadMedia\Admin\Settings;
 use Rtcl\OffloadMedia\Hooks\Hooks;
@@ -38,6 +39,7 @@ class Init {
 	private static function load_admin(): void {
 		Settings::init();
 		Scripts::init();
+		Ajax::init();
 	}
 
 	/**

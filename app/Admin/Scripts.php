@@ -14,7 +14,8 @@ class Scripts {
 	}
 
 	public static function register_scripts(): void {
-		wp_register_script( 'rtcl-offload-media', RTCL_OFFLOAD_MEDIA_PLUGIN_URL . 'assets/js/admin.js', [ 'jquery', 'rtcl-admin' ], RTCL_OFFLOAD_MEDIA_VERSION, true );
+		wp_register_script( 'rtcl-offload-media', RTCL_OFFLOAD_MEDIA_PLUGIN_URL . 'assets/js/admin.js', [ 'jquery', 'rtcl-admin' ], RTCL_OFFLOAD_MEDIA_VERSION,
+			true );
 	}
 
 	public static function enqueue_scripts(): void {
