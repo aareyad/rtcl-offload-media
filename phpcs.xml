@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<ruleset name="My Plugin Standards">
+    <description>A custom set of rules to check for a WordPress project</description>
+
+    <config name="minimum_supported_wp_version" value="5.0.0"/>
+    <arg name="extensions" value="php"/>
+
+    <!-- Include WordPress standards -->
+    <rule ref="WordPress"/>
+    <rule ref="WordPress-Docs"/>
+    <rule ref="WordPress-Extra"/>
+    <rule ref="PHPCompatibility"/>
+
+    <!-- Exclude WordPress-specific sniffs -->
+    <exclude name="WordPress.Files.FileName"/>
+    <exclude name="WordPress.NamingConventions.ValidClassName"/>
+    <exclude name="PSR2.Files.EndFileNewline.NoneFound"/>
+
+    <!-- Exclude Generic/PEAR/Squiz sniffs -->
+    <exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
+    <exclude name="PEAR.Functions.FunctionCallSignature.MultipleArguments"/>
+    <exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
+    <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+    <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace"/>
+    <exclude name="PSR1.Files.SideEffects"/>
+    <exclude name="Generic.Namespaces.NamespaceDeclaration"/>
+    <exclude name="PSR12.Methods.FunctionDeclaration.MissingReturnType"/>
+    <exclude name="PHPCompatibility.Functions.MissingReturnTypeDeclaration"/>
+
+    <!-- Exclude unnecessary folders -->
+    <exclude-pattern>/vendor/*</exclude-pattern>
+    <exclude-pattern>/node_modules/*</exclude-pattern>
+    <exclude-pattern>/tests/*</exclude-pattern>
+    <exclude-pattern>/docker/*</exclude-pattern>
+    <exclude-pattern>/build/*</exclude-pattern>
+    <exclude-pattern>/temp/*</exclude-pattern>
+    <exclude-pattern>/dist/*</exclude-pattern>
+
+    <!-- Scan the root -->
+    <file>.</file>
+</ruleset>

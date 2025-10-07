@@ -1,0 +1,30 @@
+{
+  "name": "radiustheme/rtcl-offload-media",
+  "description": "Offload Media addon for Classified Listing.",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Rtcl\\OffloadMedia\\": "app/"
+    }
+  },
+  "authors": [
+    {
+      "name": "RadiusTheme",
+      "email": "radiustheme@gmail.com"
+    }
+  ],
+  "require": {
+    "aws/aws-sdk-php": "^3.356"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "*",
+    "phpcompatibility/php-compatibility": "*",
+    "wp-coding-standards/wpcs": "*"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "platform-check": false
+  }
+}
