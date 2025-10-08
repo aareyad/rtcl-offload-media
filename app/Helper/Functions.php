@@ -12,11 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Functions {
 
 	public static function get_storage_client(): R2Client|bool {
-		$options = RtclFunctions::get_option( 'rtcl_offload_media_settings' );
-
-		if ( empty( $options ) ) {
-			$options = array();
-		}
+		$options = self::get_options();
 
 		$provider = $options['provider'] ?? 'r2';
 
@@ -37,12 +33,23 @@ class Functions {
 	}
 
 	/**
+	 * Get the plugin options
+	 *
+	 * @return array
+	 */
+	public static function get_options(): array {
+		$options = RtclFunctions::get_option( 'rtcl_offload_media_settings' );
+
+		return empty( $options ) ? [] : $options;
+	}
+
+	/**
 	 * Check if the local file should be removed
 	 *
 	 * @return bool
 	 */
 	public static function remove_local_file(): bool {
-		$options = RtclFunctions::get_option( 'rtcl_offload_media_settings' );
+		$options = self::get_options();
 
 		return ! empty( $options['skip_local_storage'] ) && 'yes' === $options['skip_local_storage'];
 	}
@@ -53,7 +60,7 @@ class Functions {
 	 * @return bool
 	 */
 	public static function offload_only_rtcl(): bool {
-		$options = RtclFunctions::get_option( 'rtcl_offload_media_settings' );
+		$options = self::get_options();
 
 		return ! empty( $options['rtcl_offload_only'] ) && 'yes' === $options['rtcl_offload_only'];
 	}

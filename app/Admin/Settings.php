@@ -2,6 +2,8 @@
 
 namespace Rtcl\OffloadMedia\Admin;
 
+use Rtcl\OffloadMedia\Helper\Functions;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -48,7 +50,9 @@ class Settings {
 			'check_connection'    => [
 				'title'       => '',
 				'type'        => 'html',
-				'description' => __( '<a id="rtcl-offload-connection-check" class="btn" href="#">Check Connection</a>', 'rtcl-offload-media' )
+				'description' => empty( Functions::get_options() )
+					? ''
+					: __( '<a id="rtcl-offload-connection-check" class="btn" href="#">Check Connection</a>', 'rtcl-offload-media' )
 			],
 			'provider'            => [
 				'title'   => esc_html__( 'Cloud Provider', 'rtcl-offload-media' ),

@@ -23,6 +23,8 @@ abstract class AbstractClient {
 
 	abstract public function delete( $key );
 
+	abstract public function checkConnection();
+
 	/**
 	 * Get the URL for the given key
 	 *

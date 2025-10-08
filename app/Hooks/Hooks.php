@@ -18,7 +18,6 @@ class Hooks {
 	 */
 	public static function init(): void {
 		$instance = new self();
-
 		// Upload hook
 		add_filter( 'wp_handle_upload', [ $instance, 'upload_to_storage' ] );
 		// Replace URLs for attachments
