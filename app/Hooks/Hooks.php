@@ -54,46 +54,13 @@ class Hooks {
 			return $upload;
 		}
 
-		$attachment_id = $upload['id'] ?? 0;
+		if ( file_exists( $file_path ) ) {
+			$url = $client->upload( $file_path, $relative_key );
 
-		// Generate metadata to ensure sizes exist
-		if ( $attachment_id ) {
-			$metadata = wp_generate_attachment_metadata( $attachment_id, $file_path );
-			wp_update_attachment_metadata( $attachment_id, $metadata );
-		} else {
-			$metadata = [];
-		}
-
-		// Prepare all files for upload: main + sizes
-		$files_to_upload = [ $relative_key ];
-
-		if ( ! empty( $metadata['sizes'] ) && is_array( $metadata['sizes'] ) ) {
-			foreach ( $metadata['sizes'] as $size ) {
-				$files_to_upload[] = dirname( $relative_key ) . '/' . $size['file'];
+			if ( $url ) {
+				$upload['url'] = $url;
 			}
 		}
-
-		// Upload all files
-		foreach ( $files_to_upload as $file ) {
-			$local_file = $upload_dir['basedir'] . '/' . $file;
-			if ( file_exists( $local_file ) ) {
-				$client->upload( $local_file, $file );
-			}
-		}
-
-		// Offload-only mode: delete local files
-		$offload_only = true;
-		if ( $offload_only ) {
-			foreach ( $files_to_upload as $file ) {
-				$local_file = $upload_dir['basedir'] . '/' . $file;
-				if ( file_exists( $local_file ) ) {
-					@unlink( $local_file );
-				}
-			}
-		}
-
-		// Return R2 URL for main file
-		$upload['url'] = $client->getUrl( $relative_key );
 
 		return $upload;
 	}
@@ -120,10 +87,13 @@ class Hooks {
 			return $metadata;
 		}
 
+		$stored_path = [];
+
 		// Upload original file
 		$main_file_path = $base_dir . $file;
 		if ( file_exists( $main_file_path ) ) {
-			$client->upload( $main_file_path, $file );
+			$url           = $client->upload( $main_file_path, $file );
+			$stored_path[] = $url;
 		}
 
 		// Upload all generated sizes
@@ -132,8 +102,34 @@ class Hooks {
 				if ( ! empty( $size_data['file'] ) ) {
 					$size_file_path = wp_normalize_path( path_join( dirname( $main_file_path ), $size_data['file'] ) );
 					if ( file_exists( $size_file_path ) ) {
-						$relative_key = str_replace( $base_dir, '', $size_file_path );
-						$client->upload( $size_file_path, $relative_key );
+						$relative_key  = str_replace( $base_dir, '', $size_file_path );
+						$url           = $client->upload( $size_file_path, $relative_key );
+						$stored_path[] = $url;
+					}
+				}
+			}
+		}
+
+		if ( $attachment_id && ! empty( $stored_path ) ) {
+			update_post_meta( $attachment_id, '_rtcl_offloaded_file', $stored_path );
+		}
+
+		$offload_only = true;
+
+		if ( $offload_only ) {
+			// Delete the main file
+			if ( file_exists( $main_file_path ) ) {
+				@unlink( $main_file_path );
+			}
+
+			// Delete all resized files
+			if ( ! empty( $metadata['sizes'] ) && is_array( $metadata['sizes'] ) ) {
+				foreach ( $metadata['sizes'] as $size_data ) {
+					if ( ! empty( $size_data['file'] ) ) {
+						$size_file_path = wp_normalize_path( path_join( dirname( $main_file_path ), $size_data['file'] ) );
+						if ( file_exists( $size_file_path ) ) {
+							@unlink( $size_file_path );
+						}
 					}
 				}
 			}
@@ -151,6 +147,12 @@ class Hooks {
 	 * @return string
 	 */
 	public function replace_with_storage_url( $url, $post_id ) {
+		// Only replace URL if the file was offloaded
+		$offloaded = get_post_meta( $post_id, '_rtcl_offloaded_file', true );
+		if ( ! $offloaded ) {
+			return $url;
+		}
+
 		$file = get_post_meta( $post_id, '_wp_attached_file', true );
 		if ( ! $file ) {
 			return $url;
@@ -158,9 +160,7 @@ class Hooks {
 
 		$client = Functions::get_storage_client();
 		if ( $client instanceof AbstractClient ) {
-			if ( $client->head( $file ) ) {
-				return $client->getUrl( $file );
-			}
+			return $client->getUrl( $file );
 		}
 
 		return $url;
@@ -179,6 +179,11 @@ class Hooks {
 			return;
 		}
 
+		$offloaded = get_post_meta( $post_id, '_rtcl_offloaded_file', true );
+		if ( ! $offloaded ) {
+			return;
+		}
+
 		$client = Functions::get_storage_client();
 		if ( $client instanceof AbstractClient ) {
 			$client->delete( $file );
@@ -190,6 +195,7 @@ class Hooks {
 					$size_file = dirname( $file ) . '/' . $size['file'];
 					$client->delete( $size_file );
 				}
+				delete_post_meta( $post_id, '_rtcl_offloaded_file' );
 			}
 		}
 	}
