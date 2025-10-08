@@ -47,4 +47,15 @@ class Functions {
 		return ! empty( $options['skip_local_storage'] ) && 'yes' === $options['skip_local_storage'];
 	}
 
+	/**
+	 * Check if the offload should be only for classified listing
+	 *
+	 * @return bool
+	 */
+	public static function offload_only_rtcl(): bool {
+		$options = RtclFunctions::get_option( 'rtcl_offload_media_settings' );
+
+		return ! empty( $options['rtcl_offload_only'] ) && 'yes' === $options['rtcl_offload_only'];
+	}
+
 }

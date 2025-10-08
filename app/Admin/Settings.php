@@ -39,13 +39,18 @@ class Settings {
 	 */
 	public static function options(): array {
 		return [
-			'field_title_offload'   => [
+			'field_title_offload' => [
 				'title'       => esc_html__( 'Offload Settings', 'rtcl-offload-media' ),
 				'type'        => 'section',
 				'description' => esc_html__( 'Select a cloud storage provider and provide the necessary credentials.',
 					'classified-listing' ),
 			],
-			'provider'              => [
+			'check_connection'    => [
+				'title'       => '',
+				'type'        => 'html',
+				'description' => __( '<a id="rtcl-offload-connection-check" class="btn" href="#">Check Connection</a>', 'rtcl-offload-media' )
+			],
+			'provider'            => [
 				'title'   => esc_html__( 'Cloud Provider', 'rtcl-offload-media' ),
 				'type'    => 'select',
 				'options' => [
@@ -53,42 +58,37 @@ class Settings {
 				],
 				'default' => 'r2',
 			],
-			'access_key'            => [
+			'access_key'          => [
 				'title'       => esc_html__( 'Access Key ID', 'rtcl-offload-media' ),
 				'type'        => 'password',
 				'default'     => '',
 				'placeholder' => 'access-key-***********************',
 			],
-			'secret_key'            => [
+			'secret_key'          => [
 				'title'       => esc_html__( 'Secret Key', 'rtcl-offload-media' ),
 				'type'        => 'password',
 				'default'     => '',
 				'placeholder' => 'secret-key-***********************',
 			],
-			'endpoint'              => [
+			'endpoint'            => [
 				'title' => esc_html__( 'Endpoint URL', 'rtcl-offload-media' ),
 				'type'  => 'url',
 			],
-			'bucket'                => [
+			'bucket'              => [
 				'title' => esc_html__( 'Bucket Name', 'rtcl-offload-media' ),
 				'type'  => 'text',
 			],
-			'domain'                => [
+			'domain'              => [
 				'title' => esc_html__( 'Domain', 'rtcl-offload-media' ),
 				'type'  => 'text',
 			],
-			'check_connection'      => [
-				'title'       => '',
-				'type'        => 'html',
-				'description' => __( '<a id="rtcl-offload-connection-check" class="btn" href="#">Check Connection</a>', 'rtcl-offload-media' )
-			],
-			'skip_local_storage'    => [
+			'skip_local_storage'  => [
 				'title'       => esc_html__( 'Skip Local Storage', 'rtcl-offload-media' ),
 				'type'        => 'switch',
 				'default'     => 'yes',
 				'description' => esc_html__( 'Allow upload only to CDN storage.', 'rtcl-offload-media' ),
 			],
-			'offload_listing_image' => [
+			'rtcl_offload_only'   => [
 				'title'       => esc_html__( 'Offload Listing Image Only', 'rtcl-offload-media' ),
 				'type'        => 'switch',
 				'default'     => 'yes',
