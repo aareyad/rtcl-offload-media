@@ -92,19 +92,19 @@ class Hooks {
 		// Upload original file
 		$main_file_path = $base_dir . $file;
 		if ( file_exists( $main_file_path ) ) {
-			$url           = $client->upload( $main_file_path, $file );
-			$stored_path[] = $url;
+			$url                 = $client->upload( $main_file_path, $file );
+			$stored_path['main'] = $file;
 		}
 
 		// Upload all generated sizes
 		if ( ! empty( $metadata['sizes'] ) && is_array( $metadata['sizes'] ) ) {
-			foreach ( $metadata['sizes'] as $size_data ) {
+			foreach ( $metadata['sizes'] as $size_name => $size_data ) {
 				if ( ! empty( $size_data['file'] ) ) {
 					$size_file_path = wp_normalize_path( path_join( dirname( $main_file_path ), $size_data['file'] ) );
 					if ( file_exists( $size_file_path ) ) {
-						$relative_key  = str_replace( $base_dir, '', $size_file_path );
-						$url           = $client->upload( $size_file_path, $relative_key );
-						$stored_path[] = $url;
+						$relative_key              = str_replace( $base_dir, '', $size_file_path );
+						$url                       = $client->upload( $size_file_path, $relative_key );
+						$stored_path[ $size_name ] = $relative_key;
 					}
 				}
 			}
