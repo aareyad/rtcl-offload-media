@@ -36,4 +36,15 @@ class Functions {
 		return false;
 	}
 
+	/**
+	 * Check if the local file should be removed
+	 *
+	 * @return bool
+	 */
+	public static function remove_local_file(): bool {
+		$options = RtclFunctions::get_option( 'rtcl_offload_media_settings' );
+
+		return ! empty( $options['skip_local_storage'] ) && 'yes' === $options['skip_local_storage'];
+	}
+
 }

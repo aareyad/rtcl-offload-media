@@ -114,9 +114,7 @@ class Hooks {
 			update_post_meta( $attachment_id, '_rtcl_offloaded_file', $stored_path );
 		}
 
-		$offload_only = true;
-
-		if ( $offload_only ) {
+		if ( Functions::remove_local_file() ) {
 			// Delete the main file
 			if ( file_exists( $main_file_path ) ) {
 				@unlink( $main_file_path );

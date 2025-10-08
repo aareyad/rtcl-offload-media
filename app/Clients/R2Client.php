@@ -2,6 +2,7 @@
 
 namespace Rtcl\OffloadMedia\Clients;
 
+use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
 
@@ -37,7 +38,7 @@ class R2Client extends AbstractClient {
 			] );
 
 			return true; // File exists
-		} catch ( \Aws\S3\Exception\S3Exception $e ) {
+		} catch ( S3Exception $e ) {
 			// If not found, return false
 			if ( $e->getAwsErrorCode() === 'NotFound' ) {
 				return false;
