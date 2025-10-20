@@ -3,7 +3,7 @@
 namespace Rtcl\OffloadMedia\Admin;
 
 use Rtcl\Helpers\Functions as RtclFunctions;
-use Rtcl\OffloadMedia\Clients\R2Client;
+use Rtcl\OffloadMedia\Clients\AbstractClient;
 use Rtcl\OffloadMedia\Helper\Functions;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Ajax {
 
 	public static function init(): void {
-		add_action( 'wp_ajax_rtcl_r2_check_connection', [ __CLASS__, 'check_r2_connection' ] );
+		add_action( 'wp_ajax_rtcl_check_offload_connection', [ __CLASS__, 'check_offload_connection' ] );
 	}
 
 	/**
@@ -21,14 +21,14 @@ class Ajax {
 	 *
 	 * @return void
 	 */
-	public static function check_r2_connection(): void {
+	public static function check_offload_connection(): void {
 		if ( ! current_user_can( 'manage_options' ) || ! RtclFunctions::verify_nonce() ) {
 			wp_send_json_error( 'Unauthorized' );
 		}
 
 		$client = Functions::get_storage_client();
 
-		if ( $client instanceof R2Client ) {
+		if ( $client instanceof AbstractClient ) {
 			$result = $client->checkConnection();
 
 			if ( $result === true ) {
@@ -38,7 +38,7 @@ class Ajax {
 			}
 		}
 
-		wp_send_json_error( 'R2 Client not initialized' );
+		wp_send_json_error( 'Client not initialized' );
 	}
 
 }

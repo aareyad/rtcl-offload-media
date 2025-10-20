@@ -1,0 +1,63 @@
+# Copyright (C) 2025 Classified Listing - Offload Media
+# This file is distributed under the same license as the Classified Listing - Offload Media package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Classified Listing - Offload Media\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-10-08 11:34+0000\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../app/Admin/Settings.php:30, ../app/Admin/Settings.php:45
+msgid "Offload Settings"
+msgstr ""
+
+#: ../app/Admin/Settings.php:55
+msgid "<a id=\"rtcl-offload-connection-check\" class=\"btn\" href=\"#\">Check Connection</a>"
+msgstr ""
+
+#: ../app/Admin/Settings.php:58
+msgid "Cloud Provider"
+msgstr ""
+
+#: ../app/Admin/Settings.php:66
+msgid "Access Key ID"
+msgstr ""
+
+#: ../app/Admin/Settings.php:72
+msgid "Secret Key"
+msgstr ""
+
+#: ../app/Admin/Settings.php:78
+msgid "Endpoint URL"
+msgstr ""
+
+#: ../app/Admin/Settings.php:82
+msgid "Bucket Name"
+msgstr ""
+
+#: ../app/Admin/Settings.php:86
+msgid "Domain"
+msgstr ""
+
+#: ../app/Admin/Settings.php:90
+msgid "Skip Local Storage"
+msgstr ""
+
+#: ../app/Admin/Settings.php:93
+msgid "Allow upload only to CDN storage."
+msgstr ""
+
+#: ../app/Admin/Settings.php:96
+msgid "Offload Listing Image Only"
+msgstr ""
+
+#: ../app/Admin/Settings.php:99
+msgid "Allow upload only for listing image and use local storage for others."
+msgstr ""

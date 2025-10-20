@@ -39,7 +39,7 @@
     "emojic": "^1.1.16",
     "fs-extra": "^10.0.0",
     "laravel-mix": "^6.0.19",
-    "wp-pot": "^1.9.9"
+    "wp-pot": "^1.10.2"
   },
   "bugs": {
     "url": "https://github.com/aareyad/rtcl-offload-media/issues"

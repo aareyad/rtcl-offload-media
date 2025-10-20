@@ -4,6 +4,7 @@ namespace Rtcl\OffloadMedia\Helper;
 
 use Rtcl\Helpers\Functions as RtclFunctions;
 use Rtcl\OffloadMedia\Clients\R2Client;
+use Rtcl\OffloadMedia\Clients\WasabiClient;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -11,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Functions {
 
-	public static function get_storage_client(): R2Client|bool {
+	public static function get_storage_client(): R2Client|WasabiClient|bool {
 		$options = self::get_options();
 
 		$provider = $options['provider'] ?? 'r2';
@@ -27,6 +28,8 @@ class Functions {
 
 		if ( $provider === 'r2' && class_exists( '\Rtcl\OffloadMedia\Clients\R2Client' ) ) {
 			return new R2Client( $config );
+		} else if ( $provider === 'wasabi' && class_exists( '\Rtcl\OffloadMedia\Clients\WasabiClient' ) ) {
+			return new WasabiClient( $config );
 		}
 
 		return false;

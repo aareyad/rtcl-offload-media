@@ -22,7 +22,7 @@
                 type: "POST",
                 dataType: 'json',
                 data: {
-                    action: 'rtcl_r2_check_connection',
+                    action: 'rtcl_check_offload_connection',
                     __rtcl_wpnonce: rtcl.__rtcl_wpnonce
                 },
                 beforeSend: function () {

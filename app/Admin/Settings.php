@@ -58,7 +58,8 @@ class Settings {
 				'title'   => esc_html__( 'Cloud Provider', 'rtcl-offload-media' ),
 				'type'    => 'select',
 				'options' => [
-					'r2' => esc_html__( 'Cloudflare R2', 'classified-listing' )
+					'r2'     => esc_html__( 'Cloudflare R2', 'classified-listing' ),
+					'wasabi' => esc_html__( 'Wasabi', 'classified-listing' ),
 				],
 				'default' => 'r2',
 			],
@@ -75,8 +76,30 @@ class Settings {
 				'placeholder' => 'secret-key-***********************',
 			],
 			'endpoint'            => [
-				'title' => esc_html__( 'Endpoint URL', 'rtcl-offload-media' ),
-				'type'  => 'url',
+				'title'   => esc_html__( 'Endpoint URL', 'rtcl-offload-media' ),
+				'type'    => 'url',
+				'depends' => [
+					'on' => [
+						[
+							'field'     => 'rtcl_offload_media_settings.provider',
+							'value'     => 'r2',
+							'condition' => '=',
+						]
+					]
+				],
+			],
+			'region'              => [
+				'title'   => esc_html__( 'Region', 'rtcl-offload-media' ),
+				'type'    => 'text',
+				'depends' => [
+					'on' => [
+						[
+							'field'     => 'rtcl_offload_media_settings.provider',
+							'value'     => 'wasabi',
+							'condition' => '=',
+						]
+					]
+				],
 			],
 			'bucket'              => [
 				'title' => esc_html__( 'Bucket Name', 'rtcl-offload-media' ),

@@ -9,12 +9,14 @@
     <rule ref="WordPress"/>
     <rule ref="WordPress-Docs"/>
     <rule ref="WordPress-Extra"/>
+    <rule ref="WordPress-VIP-Go"/>
     <rule ref="PHPCompatibility"/>
 
     <!-- Exclude WordPress-specific sniffs -->
     <exclude name="WordPress.Files.FileName"/>
     <exclude name="WordPress.NamingConventions.ValidClassName"/>
     <exclude name="PSR2.Files.EndFileNewline.NoneFound"/>
+    <exclude name="WordPressVIPMinimum.ConstantString.NotConst"/>
 
     <!-- Exclude Generic/PEAR/Squiz sniffs -->
     <exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
@@ -26,6 +28,7 @@
     <exclude name="Generic.Namespaces.NamespaceDeclaration"/>
     <exclude name="PSR12.Methods.FunctionDeclaration.MissingReturnType"/>
     <exclude name="PHPCompatibility.Functions.MissingReturnTypeDeclaration"/>
+    <exclude name="Generic.PHP.ForbiddenFunctions.FoundWithAlternative"/>
 
     <!-- Exclude unnecessary folders -->
     <exclude-pattern>/vendor/*</exclude-pattern>

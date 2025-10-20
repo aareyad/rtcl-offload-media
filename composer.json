@@ -14,7 +14,37 @@
     }
   ],
   "require": {
-    "aws/aws-sdk-php": "^3.356"
+    "aws/aws-sdk-php": "^3.331.0"
+  },
+  "extra": {
+    "aws/aws-sdk-php": [
+      "CloudFront"
+    ]
+  },
+  "scripts": {
+    "package": [
+      "composer scope-release",
+      "cd .. && zip -r rtcl-offload-media.zip rtcl-offload-media -x 'rtcl-offload-media/.git/*' -x 'rtcl-offload-media/.gitignore' -x 'rtcl-offload-media/.github/*' -x 'rtcl-offload-media/composer.lock' -x 'rtcl-offload-media/*.md' -x 'rtcl-offload-media/.phpcs.xml' -x 'rtcl-offload-media/.editorconfig' -x 'rtcl-offload-media/scoper.inc.php'"
+    ],
+    "pre-autoload-dump": "Aws\\Script\\Composer\\Composer::removeUnusedServices",
+    "scope-release": [
+      "rm -rf vendor",
+      "composer install --no-dev --optimize-autoloader --prefer-dist",
+      "~/.composer/vendor/bin/php-scoper add-prefix",
+      "rm -rf vendor",
+      "mv build/vendor vendor",
+      "rm -rf build",
+      "composer dump-autoload --classmap-authoritative"
+    ],
+    "scope-dev": [
+      "rm -rf vendor",
+      "composer install",
+      "~/.composer/vendor/bin/php-scoper add-prefix",
+      "rm -rf vendor",
+      "mv build/vendor vendor",
+      "rm -rf build",
+      "composer dump-autoload --classmap-authoritative"
+    ]
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "*",
@@ -25,6 +55,7 @@
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
     },
+    "optimize-autoloader": true,
     "platform-check": false
   }
 }

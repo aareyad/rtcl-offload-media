@@ -29,6 +29,7 @@ if (process.env.npm_config_package) {
             'languages',
             'templates',
             'vendor',
+            'composer.json',
             'index.php',
             `${package_slug}.php`];
         fs.ensureDir(copyTo, function (err) {
@@ -51,11 +52,14 @@ if ((!process.env.npm_config_block && !process.env.npm_config_package) && (proce
     if (mix.inProduction()) {
         let languages = path.resolve('languages');
         fs.ensureDir(languages, function (err) {
-            if (err) return console.error(err); // if file or folder does not exist
+            if (err) return console.error(err); // if a file or folder does not exist
             wpPot({
                 package: 'Classified Listing - Offload Media',
                 bugReport: '',
-                src: '**/*.php',
+                src: [
+                    'app/**/*.php',
+                    'rtcl-offload-media.php'
+                ],
                 domain: 'rtcl-offload-media',
                 destFile: `languages/rtcl-offload-media.pot`
             });
@@ -65,48 +69,5 @@ if ((!process.env.npm_config_block && !process.env.npm_config_package) && (proce
 
     mix
         .babel(`src/js/admin.js`, `assets/js/admin${min}.js`)
-
-}
-
-if (process.env.npm_config_zip) {
-    async function getVersion() {
-        let data;
-        try {
-            data = await fs.readFile(package_path + `/${package_slug}.php`, 'utf-8');
-        } catch (err) {
-            console.error(err);
-        }
-        const lines = data.split(/\r?\n/);
-        let version = '';
-        for (let i = 0; i < lines.length; i++) {
-            if (lines[i].includes('* Version:') || lines[i].includes('*Version:')) {
-                version = lines[i].replace('* Version:', '').replace('*Version:', '').trim();
-                break;
-            }
-        }
-        return version;
-    }
-
-    const version_get = getVersion();
-    version_get.then(function (version) {
-        const destinationPath = `${temDirectory}/${package_slug}.${version}.zip`;
-        const output = fs.createWriteStream(destinationPath);
-        const archive = archiver('zip', {zlib: {level: 9}});
-        output.on('close', function () {
-            console.log(archive.pointer() + ' total bytes');
-            console.log('Archive has been finalized and the output file descriptor has closed.');
-            fs.removeSync(`${temDirectory}/${package_slug}`);
-        });
-        output.on('end', function () {
-            console.log('Data has been drained');
-        });
-        archive.on('error', function (err) {
-            throw err;
-        });
-
-        archive.pipe(output);
-        archive.directory(`${temDirectory}/${package_slug}`, package_slug);
-        archive.finalize();
-    });
 
 }
