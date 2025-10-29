@@ -9,6 +9,9 @@ abstract class AbstractClient {
 	protected string $endpoint;
 	protected string $domain;
 
+	/**
+	 * @param array $config object configuration.
+	 */
 	public function __construct( $config ) {
 		$this->accessKey = $config['access_key'] ?? '';
 		$this->secretKey = $config['secret_key'] ?? '';
@@ -17,18 +20,44 @@ abstract class AbstractClient {
 		$this->domain    = $config['domain'] ?? '';
 	}
 
+	/**
+	 * Upload file to bucket
+	 *
+	 * @param string $filePath Local path to file.
+	 * @param string $key      Key (path in bucket).
+	 *
+	 * @return string|false Public URL on success, false on failure
+	 */
 	abstract public function upload( $filePath, $key );
 
+	/**
+	 * Check if object exists
+	 *
+	 * @param string $key bucket key.
+	 *
+	 * @return bool
+	 */
 	abstract public function head( $key );
 
+	/**
+	 * Delete file from bucket
+	 *
+	 * @param string $key bucket key.
+	 *
+	 * @return bool
+	 */
 	abstract public function delete( $key );
-
+	/**
+	 * Verify connection to bucket
+	 *
+	 * @return bool|string True if OK, or error message if failed
+	 */
 	abstract public function checkConnection();
 
 	/**
 	 * Get the URL for the given key
 	 *
-	 * @param $key
+	 * @param string $key bucket key.
 	 *
 	 * @return string
 	 */

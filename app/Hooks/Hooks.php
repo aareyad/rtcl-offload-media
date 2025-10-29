@@ -31,7 +31,7 @@ class Hooks {
 	/**
 	 * Upload the main file and its sizes to R2
 	 *
-	 * @param array $upload
+	 * @param array $upload Upload data.
 	 *
 	 * @return array
 	 */
@@ -69,8 +69,8 @@ class Hooks {
 	/**
 	 * Upload all generated sizes to storage after metadata generation
 	 *
-	 * @param array $metadata
-	 * @param int   $attachment_id
+	 * @param array $metadata Attachment metadata.
+	 * @param int   $attachment_id Attachment ID.
 	 *
 	 * @return array
 	 */
@@ -124,7 +124,7 @@ class Hooks {
 		if ( Functions::remove_local_file() ) {
 			// Delete the main file
 			if ( file_exists( $main_file_path ) ) {
-				@unlink( $main_file_path );
+				wp_delete_file( $main_file_path );
 			}
 
 			// Delete all resized files
@@ -133,7 +133,7 @@ class Hooks {
 					if ( ! empty( $size_data['file'] ) ) {
 						$size_file_path = wp_normalize_path( path_join( dirname( $main_file_path ), $size_data['file'] ) );
 						if ( file_exists( $size_file_path ) ) {
-							@unlink( $size_file_path );
+							wp_delete_file( $size_file_path );
 						}
 					}
 				}
@@ -146,8 +146,8 @@ class Hooks {
 	/**
 	 * Replace attachment URL with storage URL
 	 *
-	 * @param string $url
-	 * @param int    $post_id
+	 * @param string $url Attachment URL.
+	 * @param int    $post_id The attachment post ID.
 	 *
 	 * @return string
 	 */
@@ -174,7 +174,7 @@ class Hooks {
 	/**
 	 * Delete attachment files from storage
 	 *
-	 * @param int $post_id
+	 * @param int $post_id The attachment post ID.
 	 *
 	 * @return void
 	 */

@@ -21,7 +21,7 @@ class Settings {
 	/**
 	 * Register settings
 	 *
-	 * @param $options
+	 * @param array $options Settings to configure an object.
 	 *
 	 * @return array
 	 */
@@ -44,22 +44,24 @@ class Settings {
 			'field_title_offload' => [
 				'title'       => esc_html__( 'Offload Settings', 'rtcl-offload-media' ),
 				'type'        => 'section',
-				'description' => esc_html__( 'Select a cloud storage provider and provide the necessary credentials.',
-					'classified-listing' ),
+				'description' => esc_html__(
+					'Select a cloud storage provider and provide the necessary credentials.',
+					'rtcl-offload-media'
+				),
 			],
 			'check_connection'    => [
 				'title'       => '',
 				'type'        => 'html',
 				'description' => empty( Functions::get_options() )
 					? ''
-					: __( '<a id="rtcl-offload-connection-check" class="btn" href="#">Check Connection</a>', 'rtcl-offload-media' )
+					: __( '<a id="rtcl-offload-connection-check" class="btn" href="#">Check Connection</a>', 'rtcl-offload-media' ),
 			],
 			'provider'            => [
 				'title'   => esc_html__( 'Cloud Provider', 'rtcl-offload-media' ),
 				'type'    => 'select',
 				'options' => [
-					'r2'     => esc_html__( 'Cloudflare R2', 'classified-listing' ),
-					'wasabi' => esc_html__( 'Wasabi', 'classified-listing' ),
+					'r2'     => esc_html__( 'Cloudflare R2', 'rtcl-offload-media' ),
+					'wasabi' => esc_html__( 'Wasabi', 'rtcl-offload-media' ),
 				],
 				'default' => 'r2',
 			],
@@ -84,8 +86,8 @@ class Settings {
 							'field'     => 'rtcl_offload_media_settings.provider',
 							'value'     => 'r2',
 							'condition' => '=',
-						]
-					]
+						],
+					],
 				],
 			],
 			'region'              => [
@@ -97,8 +99,8 @@ class Settings {
 							'field'     => 'rtcl_offload_media_settings.provider',
 							'value'     => 'wasabi',
 							'condition' => '=',
-						]
-					]
+						],
+					],
 				],
 			],
 			'bucket'              => [

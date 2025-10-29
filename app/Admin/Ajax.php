@@ -12,12 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Ajax {
 
+	/**
+	 * @return void
+	 */
 	public static function init(): void {
 		add_action( 'wp_ajax_rtcl_check_offload_connection', [ __CLASS__, 'check_offload_connection' ] );
 	}
 
 	/**
-	 * Check R2 connection
+	 * Check offload connection
 	 *
 	 * @return void
 	 */
@@ -40,5 +43,4 @@ class Ajax {
 
 		wp_send_json_error( 'Client not initialized' );
 	}
-
 }

@@ -1,44 +1,103 @@
 <?xml version="1.0"?>
-<ruleset name="My Plugin Standards">
-    <description>A custom set of rules to check for a WordPress project</description>
+<ruleset name="Plugin Coding Standards">
+    <description>A custom set of rules to check for plugin</description>
 
     <config name="minimum_supported_wp_version" value="5.0.0"/>
-    <arg name="extensions" value="php"/>
 
-    <!-- Include WordPress standards -->
     <rule ref="WordPress"/>
     <rule ref="WordPress-Docs"/>
     <rule ref="WordPress-Extra"/>
-    <rule ref="WordPress-VIP-Go"/>
-    <rule ref="PHPCompatibility"/>
 
-    <!-- Exclude WordPress-specific sniffs -->
-    <exclude name="WordPress.Files.FileName"/>
-    <exclude name="WordPress.NamingConventions.ValidClassName"/>
-    <exclude name="PSR2.Files.EndFileNewline.NoneFound"/>
-    <exclude name="WordPressVIPMinimum.ConstantString.NotConst"/>
+    <!-- Show progress, show the error codes for each message (source). -->
+    <arg value="ps"/>
 
-    <!-- Exclude Generic/PEAR/Squiz sniffs -->
-    <exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
-    <exclude name="PEAR.Functions.FunctionCallSignature.MultipleArguments"/>
-    <exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
-    <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
-    <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.ContentAfterBrace"/>
-    <exclude name="PSR1.Files.SideEffects"/>
-    <exclude name="Generic.Namespaces.NamespaceDeclaration"/>
-    <exclude name="PSR12.Methods.FunctionDeclaration.MissingReturnType"/>
-    <exclude name="PHPCompatibility.Functions.MissingReturnTypeDeclaration"/>
-    <exclude name="Generic.PHP.ForbiddenFunctions.FoundWithAlternative"/>
+    <!-- Check up to 8 files simultaneously. -->
+    <arg name="parallel" value="8"/>
 
-    <!-- Exclude unnecessary folders -->
+    <!-- Show results with colors -->
+    <arg name="colors"/>
+
+    <!-- Whenever possible, cache the scan results and re-use those for unchanged files on the next scan. -->
+    <arg name="cache"/>
+
+    <!-- Only scan PHP files. -->
+    <arg name="extensions" value="php"/>
+
+    <!-- Add in some extra rules from other standards. -->
+    <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+    <rule ref="Generic.Commenting.Todo"/>
+
+    <!-- Allow short array syntax -->
+    <rule ref="Generic.Arrays.DisallowShortArraySyntax.Found">
+        <severity>0</severity>
+    </rule>
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax.Found"/>
+    <rule ref="Universal">
+        <exclude name="Universal"/>
+    </rule>
+    <!-- Adds exceptions in files and variables naming conventions. -->
+    <rule ref="WordPress">
+        <exclude name="WordPress.Files.FileName"/>
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+        <exclude name="WordPress.NamingConventions.ValidVariableName"/>
+        <exclude name="WordPress.NamingConventions.ValidFunctionName"/>
+        <exclude name="Generic.Commenting.DocComment.MissingShort"/>
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
+        <exclude name="WordPress.PHP.YodaConditions"/>
+        <exclude name="Squiz.Commenting.ClassComment"/>
+        <exclude name="Squiz.Commenting.VariableComment"/>
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+    </rule>
+
+    <!-- Allows hook names in dot/slash notation. -->
+    <rule ref="WordPress.NamingConventions.ValidHookName">
+        <properties>
+            <property name="additionalWordDelimiters" value="."/>
+            <property name="additionalWordDelimiters" value="/"/>
+        </properties>
+    </rule>
+
+    <!-- Defining Cyclomatic Complexity for more modular approach -->
+    <rule ref="Generic.Metrics.CyclomaticComplexity">
+        <properties>
+            <property name="complexity" value="35"/>
+            <property name="absoluteComplexity" value="35"/>
+        </properties>
+    </rule>
+
+    <!-- Defining Nested Level -->
+    <rule ref="Generic.Metrics.NestingLevel">
+        <properties>
+            <property name="absoluteNestingLevel" value="10"/>
+        </properties>
+    </rule>
+
+    <!-- Exclude the 'empty' index files from some documentation checks -->
+    <rule ref="Squiz.Commenting.FileComment">
+        <exclude-pattern>*/index\.php</exclude-pattern>
+    </rule>
+    <rule ref="Squiz.Commenting.InlineComment.NoSpaceBefore">
+        <exclude-pattern>*/index\.php</exclude-pattern>
+    </rule>
+
+    <!-- Exclude WP Core folders and files from being checked. -->
+    <exclude-pattern>/docroot/wp-admin/*</exclude-pattern>
+    <exclude-pattern>/docroot/wp-includes/*</exclude-pattern>
+    <exclude-pattern>/docroot/wp-*.php</exclude-pattern>
+    <exclude-pattern>/docroot/index.php</exclude-pattern>
+    <exclude-pattern>/docroot/xmlrpc.php</exclude-pattern>
+    <exclude-pattern>/docroot/wp-content/plugins/*</exclude-pattern>
+
+    <!-- Directories and third party library exclusions. -->
     <exclude-pattern>/vendor/*</exclude-pattern>
     <exclude-pattern>/node_modules/*</exclude-pattern>
     <exclude-pattern>/tests/*</exclude-pattern>
     <exclude-pattern>/docker/*</exclude-pattern>
-    <exclude-pattern>/build/*</exclude-pattern>
-    <exclude-pattern>/temp/*</exclude-pattern>
-    <exclude-pattern>/dist/*</exclude-pattern>
 
-    <!-- Scan the root -->
+    <!-- Exclude All JavaScript files. -->
+    <exclude-pattern>*.js</exclude-pattern>
+
     <file>.</file>
 </ruleset>

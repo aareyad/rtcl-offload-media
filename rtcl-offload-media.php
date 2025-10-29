@@ -37,6 +37,9 @@ if ( ! defined( 'RTCL_OFFLOAD_MEDIA_PLUGIN_URL' ) ) {
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Initialize plugin.
-add_action( 'plugins_loaded', function () {
-	Init::init();
-} );
+add_action(
+	'plugins_loaded',
+	function () {
+		Init::init();
+	}
+);

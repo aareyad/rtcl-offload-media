@@ -12,23 +12,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Functions {
 
+	/**
+	 * Returns the storage client
+	 *
+	 * @return R2Client|WasabiClient|bool
+	 */
 	public static function get_storage_client(): R2Client|WasabiClient|bool {
 		$options = self::get_options();
 
 		$provider = $options['provider'] ?? 'r2';
 
-		$config = array(
+		$config = [
 			'access_key' => $options['access_key'] ?? '',
 			'secret_key' => $options['secret_key'] ?? '',
 			'bucket'     => $options['bucket'] ?? '',
 			'endpoint'   => $options['endpoint'] ?? '',
 			'domain'     => $options['domain'] ?? '',
 			'region'     => $options['region'] ?? 'auto',
-		);
+		];
 
 		if ( $provider === 'r2' && class_exists( '\Rtcl\OffloadMedia\Clients\R2Client' ) ) {
 			return new R2Client( $config );
-		} else if ( $provider === 'wasabi' && class_exists( '\Rtcl\OffloadMedia\Clients\WasabiClient' ) ) {
+		} elseif ( $provider === 'wasabi' && class_exists( '\Rtcl\OffloadMedia\Clients\WasabiClient' ) ) {
 			return new WasabiClient( $config );
 		}
 
@@ -67,5 +72,4 @@ class Functions {
 
 		return ! empty( $options['rtcl_offload_only'] ) && 'yes' === $options['rtcl_offload_only'];
 	}
-
 }
