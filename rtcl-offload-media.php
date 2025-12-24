@@ -1,7 +1,7 @@
 <?php
 /**
  * Offload Media plugin for Classified Listing
- * Plugin Name: Classified Listing - Offload Media
+ * Plugin Name: RTCL Offload Media
  * Plugin URI: https://wordpress.org/plugins/rtcl-offload-media/
  * Description: Allow users to offload media to Cloudflare R2.
  * Version: 1.0.0
