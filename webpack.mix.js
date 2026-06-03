@@ -27,6 +27,7 @@ if (process.env.npm_config_package) {
             'app',
             'assets',
             'languages',
+            'src',
             'templates',
             'vendor',
             'composer.json',

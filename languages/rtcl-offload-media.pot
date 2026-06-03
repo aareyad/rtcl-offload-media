@@ -1,4 +1,4 @@
-# Copyright (C) 2025 Classified Listing - Offload Media
+# Copyright (C) 2026 Classified Listing - Offload Media
 # This file is distributed under the same license as the Classified Listing - Offload Media package.
 msgid ""
 msgstr ""
@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-10-20 10:32+0000\n"
+"POT-Creation-Date: 2026-06-03 04:44+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -18,50 +18,62 @@ msgstr ""
 msgid "Offload Settings"
 msgstr ""
 
-#: ../app/Admin/Settings.php:55
+#: ../app/Admin/Settings.php:47
+msgid "Select a cloud storage provider and provide the necessary credentials."
+msgstr ""
+
+#: ../app/Admin/Settings.php:57
 msgid "<a id=\"rtcl-offload-connection-check\" class=\"btn\" href=\"#\">Check Connection</a>"
 msgstr ""
 
-#: ../app/Admin/Settings.php:58
+#: ../app/Admin/Settings.php:60
 msgid "Cloud Provider"
 msgstr ""
 
-#: ../app/Admin/Settings.php:67
+#: ../app/Admin/Settings.php:63
+msgid "Cloudflare R2"
+msgstr ""
+
+#: ../app/Admin/Settings.php:64
+msgid "Wasabi"
+msgstr ""
+
+#: ../app/Admin/Settings.php:69
 msgid "Access Key ID"
 msgstr ""
 
-#: ../app/Admin/Settings.php:73
+#: ../app/Admin/Settings.php:75
 msgid "Secret Key"
 msgstr ""
 
-#: ../app/Admin/Settings.php:79
+#: ../app/Admin/Settings.php:81
 msgid "Endpoint URL"
 msgstr ""
 
-#: ../app/Admin/Settings.php:92
+#: ../app/Admin/Settings.php:94
 msgid "Region"
 msgstr ""
 
-#: ../app/Admin/Settings.php:105
+#: ../app/Admin/Settings.php:107
 msgid "Bucket Name"
 msgstr ""
 
-#: ../app/Admin/Settings.php:109
+#: ../app/Admin/Settings.php:111
 msgid "Domain"
 msgstr ""
 
-#: ../app/Admin/Settings.php:113
+#: ../app/Admin/Settings.php:115
 msgid "Skip Local Storage"
 msgstr ""
 
-#: ../app/Admin/Settings.php:116
+#: ../app/Admin/Settings.php:118
 msgid "Allow upload only to CDN storage."
 msgstr ""
 
-#: ../app/Admin/Settings.php:119
+#: ../app/Admin/Settings.php:121
 msgid "Offload Listing Image Only"
 msgstr ""
 
-#: ../app/Admin/Settings.php:122
+#: ../app/Admin/Settings.php:124
 msgid "Allow upload only for listing image and use local storage for others."
 msgstr ""
