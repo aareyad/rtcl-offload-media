@@ -1,9 +1,9 @@
 === RTCL Offload Media ===
-Contributors: techlabpro1
+Contributors: techlabpro1, mamunnu
 Donate link:
 Tags: media offload, image offload, cloud storage, cloudflare r2, wasabi, cdn
 Requires at least: 6.7
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
